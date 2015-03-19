@@ -10,7 +10,7 @@ import openfl.geom.Rectangle;
 class Main extends Sprite
 {
 	var _editorState:EditorState;
-	var _editorVars:Dynamic;
+	var _gameVars:Dynamic;
 	var _canvas:Bitmap;
 	var _canvasData:BitmapData;
 	
@@ -24,20 +24,17 @@ class Main extends Sprite
 	private function init(e:Event):Void
 	{
 		addEventListener(Event.ADDED_TO_STAGE, init);
-		
-		_editorVars = 
+		stage.frameRate = 60;
+
+		_gameVars = 
 		{
 			width: stage.stageWidth,
 			height: stage.stageHeight,
-			tileWidth: 40,
-			tileHeight: 40,
-			widthInTiles: 32,
-			heightInTiles: 18
 		};
 
-		_editorState = new EditorState(_editorVars);
+		_editorState = new EditorState(_gameVars);
 
-		_canvasData = new BitmapData(_editorVars.width, _editorVars.height, false);
+		_canvasData = new BitmapData(_gameVars.width, _gameVars.height, false);
 
 		_canvas = new Bitmap(_canvasData);
 		addChild(_canvas);
@@ -47,17 +44,11 @@ class Main extends Sprite
 
 	private function update(e:Event):Void
 	{
-		var _tiles:Array<Tile> = _editorState.get_tilemap();
+		var renders:Array<EditorState.TileRender> = _editorState.update(1/60 * 1000);
 
-		for (tileIndex in 0..._tiles.length)
+		for (tile in renders)
 		{
-			var point:Point = Utils.index_to_point(tileIndex, _editorVars.widthInTiles);
-			draw_rectangle(point.x * _editorVars.tileWidth, point.y * _editorVars.tileHeight, _editorVars.tileWidth, _editorVars.tileHeight, 0xFF0000);
+			_canvasData.fillRect(new Rectangle(tile.x, tile.y, tile.width, tile.height), tile.colour);
 		}
-	}
-
-	private function draw_rectangle(x:Float, y:Float, width:Float, height:Float, colour:UInt):Void
-	{
-		_canvasData.fillRect(new Rectangle(x, y, width, height), colour);
 	}
 }
