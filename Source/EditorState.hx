@@ -8,6 +8,8 @@ class EditorState
 	private var _widthInTiles:Int = 32;
 	private var _heightInTiles:Int = 18;
 
+	public var renders:Array<TileRender>;
+
 	public function new(gameVars:Dynamic)
 	{
 		_gameVars = gameVars;
@@ -28,9 +30,9 @@ class EditorState
 		}
 	}
 
-	public function update(time:Float):Array<TileRender>
+	public function update(time:Float, mouse:MouseState):Void
 	{
-		var renders:Array<TileRender> = [];
+		renders = [];
 
 		for (tileIndex in 0..._tilemap.length)
 		{
@@ -38,7 +40,7 @@ class EditorState
 			renders.push({ x: point.x, y: point.y, width: _gameVars.width, height: _gameVars.height, colour: 0xFF0000 });
 		}
 
-		return renders;
+		trace(mouse);
 	}
 }
 
@@ -48,4 +50,10 @@ typedef TileRender = {
 	width:Float,
 	height:Float,
 	colour:Int
+}
+
+typedef MouseState = {
+	x:Float,
+	y:Float,
+	mouse1:Bool
 }
