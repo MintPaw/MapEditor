@@ -1,13 +1,17 @@
 package ;
 
+import Utils.Point;
+
 class EditorState
 {
 	private var _gameVars:Dynamic;
 	private var _tilemap:Array<Tile>;
 
+	private var _tileWidth:Float = 40;
+	private var _tileHeight:Float = 40;
 	private var _widthInTiles:Int = 32;
 	private var _heightInTiles:Int = 18;
-
+ 
 	public var renders:Array<TileRender>;
 
 	public function new(gameVars:Dynamic)
@@ -32,15 +36,22 @@ class EditorState
 
 	public function update(time:Float, mouse:MouseState):Void
 	{
-		renders = [];
+		{ // Update render
+			renders = [];
 
-		for (tileIndex in 0..._tilemap.length)
-		{
-			var point:Utils.Point = Utils.index_to_point(tileIndex, _widthInTiles);
-			renders.push({ x: point.x, y: point.y, width: _gameVars.width, height: _gameVars.height, colour: 0xFF0000 });
+			for (tileIndex in 0..._tilemap.length)
+			{
+				var point:Point = Utils.index_to_point(tileIndex, _widthInTiles);
+				renders.push({ x: point.x, y: point.y, width: _tileWidth, height: _tileHeight, colour: _tilemap[tileIndex].debug_colour });
+			}
 		}
 
-		trace(mouse);
+		{ // Update mouse
+			if (mouse.mouse1)
+			{
+				var tileOver:Point = { x: mouse.x / _tileWidth, y: mouse.y / _tileHeight };
+			}
+		}
 	}
 }
 
