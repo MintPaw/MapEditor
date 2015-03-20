@@ -18,7 +18,7 @@ class Tile
 	public var type:Int;
 	public var debugColour:UInt;
 
-	public function new(x:Float, y:Float, type:Int)
+	public function new(x:Float = 0, y:Float = 0, type:Int = 0)
 	{
 		this.x = x;
 		this.y = y;
@@ -34,5 +34,13 @@ class Tile
 	public function toString():String
 	{
 		return x + "," + y + "," + type;
+	}
+
+	public function fromString(s:String):Void
+	{
+		var parts:Array<String> = s.split(",");
+		x = Std.parseFloat(parts[0]);
+		y = Std.parseFloat(parts[1]);
+		paint(Std.parseInt(parts[2]));
 	}
 }

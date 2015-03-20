@@ -13,6 +13,8 @@ import openfl.geom.Rectangle;
 import openfl.Memory;
 import openfl.utils.ByteArray;
 import sys.io.File;
+import sys.io.FileOutput;
+import sys.io.FileInput;
 
 class Main extends Sprite
 {
@@ -48,6 +50,7 @@ class Main extends Sprite
 
 		_editorState = new EditorState(_systemVars, _buffer);
 		_editorState.write_file = write_file;
+		_editorState.read_file = read_file;
 
 		_canvasData = new BitmapData(_systemVars.width, _systemVars.height);
 
@@ -108,6 +111,18 @@ class Main extends Sprite
 
 	private function write_file(filename:String, contents:String):Void
 	{
-		File.write(filename).write(Bytes.ofString(contents));
+		var file:FileOutput = File.write(filename);
+		file.write(Bytes.ofString(contents));
+		file.close();
+	}
+	
+	private function read_file(filename:String):String
+	{
+		var file:FileInput = File.read(filename);
+		var bytes:Bytes = file.readAll();
+		var string:String = bytes.getString(0, bytes.length);
+		file.close();
+
+		return string;
 	}
 }

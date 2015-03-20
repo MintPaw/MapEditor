@@ -7,6 +7,7 @@ class EditorState
 {
 	public var buffer:ByteArray;
 	public var write_file:Dynamic;
+	public var read_file:Dynamic;
 
 	private var _systemVars:Dynamic;
 	private var _gameVars:Map<String, String>;
@@ -61,8 +62,8 @@ class EditorState
 				_tilemap[indexOver].paint(_tileToPaint);
 
 				_renderer.draw_rect(
-					Std.int(Utils.round(mouse.x, _tileWidth) - _tileWidth / 2),
-					Std.int(Utils.round(mouse.y, _tileHeight) - _tileHeight / 2),
+					Std.int(_tilemap[indexOver].x * _tileWidth),
+					Std.int(_tilemap[indexOver].y * _tileHeight),
 					Std.int(_tileWidth),
 					Std.int(_tileHeight),
 					_tilemap[indexOver].debugColour);
@@ -75,6 +76,7 @@ class EditorState
 			if (keyboard.keysJustDown[190]) _tileToPaint = _tileToPaint + 1;
 
 			if (keyboard.keysJustDown[83]) save();
+			if (keyboard.keysJustDown[76]) load();
 		}
 	}
 
@@ -86,15 +88,56 @@ class EditorState
 		{
 			data += key + "-" + _gameVars.get(key) + "|";
 		}
+		data = data.substr(0, data.length - 1);
 
 		data += "\n-\n";
 
 		for (tile in _tilemap)
 		{
 			data += tile.toString() + "|";
-		}		
+		}
+		data = data.substr(0, data.length - 1);
 
 		write_file(_filename, data);
+	}
+
+	private function load():Void
+	{
+		_gameVars = new Map();
+		_tilemap = [];
+
+		var data:String = read_file(_filename);
+
+		var gameVarStrings:Array<String> = data.split("\n-\n")[0].split("|");
+		for (gameVar in gameVarStrings)
+		{
+			_gameVars.set(gameVar.split("-")[0], gameVar.split("-")[1]);
+		}
+
+		var tileStrings:Array<String> = data.split("\n-\n")[1].split("|");
+
+		for (tile in tileStrings)
+		{
+			var t:Tile = new Tile();
+			t.fromString(tile);
+			_tilemap.push(t);
+		}
+
+		reblit();
+	}
+
+	private function reblit():Void
+	{
+		for (tile in _tilemap)
+		{
+			trace("- " + tile.toString() + " " + tile.debugColour);
+			_renderer.draw_rect(
+					Std.int(tile.x * _tileWidth),
+					Std.int(tile.y * _tileHeight),
+					Std.int(_tileWidth),
+					Std.int(_tileHeight),
+					tile.debugColour);
+		}
 	}
 }
 
