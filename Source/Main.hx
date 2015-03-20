@@ -8,8 +8,6 @@ import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
-import openfl.Memory;
-import openfl.utils.ByteArray;
 
 class Main extends Sprite
 {
@@ -44,6 +42,7 @@ class Main extends Sprite
 		_editorState = new EditorState(_gameVars);
 
 		_canvasData = new BitmapData(_gameVars.width, _gameVars.height, false);
+		_canvasData.floodFill(0, 0, 0xFFFFFF);
 
 		_canvas = new Bitmap(_canvasData);
 		addChild(_canvas);
@@ -58,16 +57,6 @@ class Main extends Sprite
 
 	private function update(e:Event):Void
 	{
-		var start:Float = Sys.time() * 1000;
-
-		for (i in 0...1)
-		{			
-			_canvasData.setPixel(Math.round(Math.random() * _gameVars.width), Math.round(Math.random() * _gameVars.height), Math.round(Math.random() * 0xFFFFFF));
-		}
-		
-		trace(Sys.time() * 1000 - start + "ms.");
-
-		return;
 		_editorState.update(1/60 * 1000, _mouseState, _keyboardState);
 
 		{ // Render Tiles
