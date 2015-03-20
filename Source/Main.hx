@@ -8,16 +8,18 @@ import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
+import openfl.Memory;
+import openfl.utils.ByteArray;
 
 class Main extends Sprite
 {
-	var _editorState:EditorState;
-	var _gameVars:Dynamic;
-	var _mouseState:EditorState.MouseState;
-	var _keyboardState:EditorState.KeyboardState;
+	private var _editorState:EditorState;
+	private var _gameVars:Dynamic;
+	private var _mouseState:EditorState.MouseState;
+	private var _keyboardState:EditorState.KeyboardState;
 
-	var _canvas:Bitmap;
-	var _canvasData:BitmapData;
+	private var _canvas:Bitmap;
+	private var _canvasData:BitmapData;
 	
 	public function new()
 	{
@@ -56,6 +58,16 @@ class Main extends Sprite
 
 	private function update(e:Event):Void
 	{
+		var start:Float = Sys.time() * 1000;
+
+		for (i in 0...1)
+		{			
+			_canvasData.setPixel(Math.round(Math.random() * _gameVars.width), Math.round(Math.random() * _gameVars.height), Math.round(Math.random() * 0xFFFFFF));
+		}
+		
+		trace(Sys.time() * 1000 - start + "ms.");
+
+		return;
 		_editorState.update(1/60 * 1000, _mouseState, _keyboardState);
 
 		{ // Render Tiles
@@ -89,7 +101,6 @@ class Main extends Sprite
 
 	private function key_down(e:KeyboardEvent):Void
 	{
-		trace(e.keyCode);
 		_keyboardState.keysJustDown[e.keyCode] = true;
 		_keyboardState.keysDown[e.keyCode] = true;
 	}
