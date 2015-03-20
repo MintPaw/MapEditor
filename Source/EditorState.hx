@@ -42,7 +42,7 @@ class EditorState
 			for (tileIndex in 0..._tilemap.length)
 			{
 				var point:Point = Utils.index_to_point(tileIndex, _widthInTiles);
-				renders.push({ x: point.x, y: point.y, width: _tileWidth, height: _tileHeight, colour: _tilemap[tileIndex].debug_colour });
+				renders.push({ x: point.x * _tileWidth, y: point.y * _tileHeight, width: _tileWidth, height: _tileHeight, colour: _tilemap[tileIndex].debug_colour });
 			}
 		}
 
@@ -50,6 +50,8 @@ class EditorState
 			if (mouse.mouse1)
 			{
 				var tileOver:Point = { x: mouse.x / _tileWidth, y: mouse.y / _tileHeight };
+				var indexOver:Int = Utils.point_to_index(tileOver.x, tileOver.y, _widthInTiles);
+				_tilemap[indexOver].paint(1);
 			}
 		}
 	}

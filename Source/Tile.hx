@@ -22,7 +22,12 @@ class Tile
 	{
 		this.x = x;
 		this.y = y;
-		this.type = type;
+		paint(type);
+	}
+
+	public function paint(type):Void
+	{
+		this.type = type;	
 		debug_colour = DEBUG_COLOURS[type];
 	}
 }
