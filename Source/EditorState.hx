@@ -4,6 +4,8 @@ import Utils.Point;
 
 class EditorState
 {
+	public var renders:Array<TileRender>;
+
 	private var _gameVars:Dynamic;
 	private var _tilemap:Array<Tile>;
 
@@ -11,8 +13,8 @@ class EditorState
 	private var _tileHeight:Float = 40;
 	private var _widthInTiles:Int = 32;
 	private var _heightInTiles:Int = 18;
- 
-	public var renders:Array<TileRender>;
+
+	private var _tileToPaint:Int = 1;
 
 	public function new(gameVars:Dynamic)
 	{
@@ -34,7 +36,7 @@ class EditorState
 		}
 	}
 
-	public function update(time:Float, mouse:MouseState):Void
+	public function update(time:Float, mouse:MouseState, keyboard:KeyboardState):Void
 	{
 		{ // Update render
 			renders = [];
@@ -51,7 +53,7 @@ class EditorState
 			{
 				var tileOver:Point = { x: mouse.x / _tileWidth, y: mouse.y / _tileHeight };
 				var indexOver:Int = Utils.point_to_index(tileOver.x, tileOver.y, _widthInTiles);
-				_tilemap[indexOver].paint(1);
+				_tilemap[indexOver].paint(_tileToPaint);
 			}
 		}
 	}
@@ -69,4 +71,10 @@ typedef MouseState = {
 	x:Float,
 	y:Float,
 	mouse1:Bool
+}
+
+typedef KeyboardState = {
+	keysDown:Array<Bool>,
+	keysJustDown:Array<Bool>,
+	keysJustUp:Array<Bool>
 }
