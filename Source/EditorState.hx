@@ -24,23 +24,20 @@ class EditorState
 		this.buffer = buffer;
 		_gameVars = gameVars;
 
-		generate_tilemap();
+		{ // Setup tilemap
+			_tilemap = [];
+
+			for (tileY in 0..._heightInTiles)
+			{
+				for (tileX in 0..._widthInTiles)
+				{
+					_tilemap.push(new Tile(tileX, tileY, 0));
+				}
+			}
+		}
 
 		{ // Setup renderer
 			_renderer = new Renderer(buffer, _gameVars.width);
-		}
-	}
-
-	private function generate_tilemap():Void
-	{
-		_tilemap = [];
-
-		for (tileY in 0..._heightInTiles)
-		{
-			for (tileX in 0..._widthInTiles)
-			{
-				_tilemap.push(new Tile(tileX, tileY, 0));
-			}
 		}
 	}
 

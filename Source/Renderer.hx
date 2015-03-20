@@ -21,9 +21,14 @@ class Renderer
 		{
 			for (yi in y...y+height)
 			{
-				Memory.setI32((yi * _bufferWidth + xi) * 4, colour);
+				draw_pixel(xi, yi, colour);
 			}
 		}
+	}
+
+	public inline function draw_pixel(x:Int, y:Int, colour:UInt):Void
+	{
+		Memory.setI32((y * _bufferWidth + x) * 4, colour);
 	}
 
 }
