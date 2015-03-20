@@ -9,8 +9,12 @@ class Utils
 
 	public static function point_to_index(x:Float, y:Float, totalWidth:Float):Int
 	{
-
 		return Std.int(Std.int(y)*totalWidth + Std.int(x));
+	}
+
+	public static function round(x:Float, toTheNearest:Float = 1):Int
+	{
+		return Std.int(Math.round(x / toTheNearest) *  toTheNearest);
 	}
 }
 

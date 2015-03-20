@@ -1,12 +1,15 @@
 package ;
 
 import Utils.Point;
+import openfl.utils.ByteArray;
 
 class EditorState
 {
-	public var renders:Array<TileRender>;
+	public var buffer:ByteArray;
 
 	private var _gameVars:Dynamic;
+
+	private var _renderer:Renderer;
 	private var _tilemap:Array<Tile>;
 
 	private var _tileWidth:Float = 40;
@@ -16,11 +19,16 @@ class EditorState
 
 	private var _tileToPaint:Int = 1;
 
-	public function new(gameVars:Dynamic)
+	public function new(gameVars:Dynamic, buffer:ByteArray)
 	{
+		this.buffer = buffer;
 		_gameVars = gameVars;
 
 		generate_tilemap();
+
+		{ // Setup renderer
+			_renderer = new Renderer(buffer, _gameVars.width);
+		}
 	}
 
 	private function generate_tilemap():Void
@@ -44,6 +52,13 @@ class EditorState
 				var tileOver:Point = { x: mouse.x / _tileWidth, y: mouse.y / _tileHeight };
 				var indexOver:Int = Utils.point_to_index(tileOver.x, tileOver.y, _widthInTiles);
 				_tilemap[indexOver].paint(_tileToPaint);
+
+				_renderer.draw_rect(
+					Std.int(Utils.round(mouse.x, _tileWidth) - _tileWidth / 2),
+					Std.int(Utils.round(mouse.y, _tileHeight) - _tileHeight / 2),
+					Std.int(_tileWidth),
+					Std.int(_tileHeight),
+					_tilemap[indexOver].debugColour);
 			}
 		}
 
@@ -52,25 +67,7 @@ class EditorState
 			if (keyboard.keysJustDown[188]) _tileToPaint = _tileToPaint - 1 >= 0 ? _tileToPaint - 1: _tileToPaint;
 			if (keyboard.keysJustDown[190]) _tileToPaint = _tileToPaint + 1;
 		}
-
-		{ // Update render
-			renders = [];
-
-			for (tileIndex in 0..._tilemap.length)
-			{
-				var point:Point = Utils.index_to_point(tileIndex, _widthInTiles);
-				renders.push({ x: point.x * _tileWidth, y: point.y * _tileHeight, width: _tileWidth, height: _tileHeight, colour: _tilemap[tileIndex].debug_colour });
-			}
-		}
 	}
-}
-
-typedef TileRender = {
-	x:Float,
-	y:Float,
-	width:Float,
-	height:Float,
-	colour:Int
 }
 
 typedef MouseState = {

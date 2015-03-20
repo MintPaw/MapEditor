@@ -1,5 +1,6 @@
 package ;
 
+// NOTE(jeru): Is platform dependant
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
@@ -8,6 +9,8 @@ import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
+import openfl.Memory;
+import openfl.utils.ByteArray;
 
 class Main extends Sprite
 {
@@ -18,6 +21,8 @@ class Main extends Sprite
 
 	private var _canvas:Bitmap;
 	private var _canvasData:BitmapData;
+	private var _buffer:ByteArray;
+	private var _rect:Rectangle;
 	
 	public function new()
 	{
@@ -36,13 +41,16 @@ class Main extends Sprite
 		_gameVars = 
 		{
 			width: stage.stageWidth,
-			height: stage.stageHeight,
+			height: stage.stageHeight
 		};
 
-		_editorState = new EditorState(_gameVars);
+		_editorState = new EditorState(_gameVars, _buffer);
 
-		_canvasData = new BitmapData(_gameVars.width, _gameVars.height, false);
-		_canvasData.floodFill(0, 0, 0xFFFFFF);
+		_canvasData = new BitmapData(_gameVars.width, _gameVars.height);
+
+		_rect = _canvasData.rect;
+		_buffer = _canvasData.getPixels(_rect);
+		Memory.select(_buffer);
 
 		_canvas = new Bitmap(_canvasData);
 		addChild(_canvas);
@@ -58,13 +66,8 @@ class Main extends Sprite
 	private function update(e:Event):Void
 	{
 		_editorState.update(1/60 * 1000, _mouseState, _keyboardState);
-
-		{ // Render Tiles
-			for (tile in _editorState.renders)
-			{
-				_canvasData.fillRect(new Rectangle(tile.x, tile.y, tile.width, tile.height), tile.colour);
-			}
-		}
+		_buffer.position = 0;
+		_canvasData.setPixels(_rect, _buffer);
 
 		{ // Recheck just keys
 			for (keyIndex in 0..._keyboardState.keysJustUp.length) _keyboardState.keysJustUp[keyIndex] = false;
