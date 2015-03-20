@@ -6,11 +6,14 @@ import openfl.utils.ByteArray;
 class EditorState
 {
 	public var buffer:ByteArray;
+	public var write_file:Dynamic;
 
-	private var _gameVars:Dynamic;
-
-	private var _renderer:Renderer;
+	private var _systemVars:Dynamic;
+	private var _gameVars:Map<String, String>;
 	private var _tilemap:Array<Tile>;
+	private var _renderer:Renderer;
+
+	private var _filename:String;
 
 	private var _tileWidth:Float = 40;
 	private var _tileHeight:Float = 40;
@@ -19,10 +22,17 @@ class EditorState
 
 	private var _tileToPaint:Int = 1;
 
-	public function new(gameVars:Dynamic, buffer:ByteArray)
+	public function new(systemVars:Dynamic, buffer:ByteArray)
 	{
 		this.buffer = buffer;
-		_gameVars = gameVars;
+		_systemVars = systemVars;
+		_filename = "UntitledMap.mim";
+		_gameVars = new Map();
+
+		_gameVars.set("tileWidth", Std.string(_tileWidth));
+		_gameVars.set("tileHeight", Std.string(_tileHeight));
+		_gameVars.set("widthInTiles", Std.string(_heightInTiles));
+		_gameVars.set("heightInTiles", Std.string(_widthInTiles));
 
 		{ // Setup tilemap
 			_tilemap = [];
@@ -37,7 +47,7 @@ class EditorState
 		}
 
 		{ // Setup renderer
-			_renderer = new Renderer(buffer, _gameVars.width);
+			_renderer = new Renderer(buffer, _systemVars.width);
 		}
 	}
 
@@ -63,7 +73,28 @@ class EditorState
 			// NOTE(jeru): These are not ascii
 			if (keyboard.keysJustDown[188]) _tileToPaint = _tileToPaint - 1 >= 0 ? _tileToPaint - 1: _tileToPaint;
 			if (keyboard.keysJustDown[190]) _tileToPaint = _tileToPaint + 1;
+
+			if (keyboard.keysJustDown[83]) save();
 		}
+	}
+
+	private function save():Void
+	{
+		var data:String = "";
+
+		for (key in _gameVars.keys())
+		{
+			data += key + "-" + _gameVars.get(key) + "|";
+		}
+
+		data += "\n-\n";
+
+		for (tile in _tilemap)
+		{
+			data += tile.toString() + "|";
+		}		
+
+		write_file(_filename, data);
 	}
 }
 

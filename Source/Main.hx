@@ -1,6 +1,7 @@
 package ;
 
 // NOTE(jeru): Is platform dependant
+import haxe.io.Bytes;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
@@ -11,11 +12,12 @@ import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.Memory;
 import openfl.utils.ByteArray;
+import sys.io.File;
 
 class Main extends Sprite
 {
 	private var _editorState:EditorState;
-	private var _gameVars:Dynamic;
+	private var _systemVars:Dynamic;
 	private var _mouseState:EditorState.MouseState;
 	private var _keyboardState:EditorState.KeyboardState;
 
@@ -38,15 +40,16 @@ class Main extends Sprite
 		addEventListener(Event.ADDED_TO_STAGE, init);
 		stage.frameRate = 60;
 
-		_gameVars = 
+		_systemVars = 
 		{
 			width: stage.stageWidth,
 			height: stage.stageHeight
 		};
 
-		_editorState = new EditorState(_gameVars, _buffer);
+		_editorState = new EditorState(_systemVars, _buffer);
+		_editorState.write_file = write_file;
 
-		_canvasData = new BitmapData(_gameVars.width, _gameVars.height);
+		_canvasData = new BitmapData(_systemVars.width, _systemVars.height);
 
 		_rect = _canvasData.rect;
 		_buffer = _canvasData.getPixels(_rect);
@@ -101,5 +104,10 @@ class Main extends Sprite
 	{
 		_keyboardState.keysJustUp[e.keyCode] = true;
 		_keyboardState.keysDown[e.keyCode] = false;
+	}
+
+	private function write_file(filename:String, contents:String):Void
+	{
+		File.write(filename).write(Bytes.ofString(contents));
 	}
 }

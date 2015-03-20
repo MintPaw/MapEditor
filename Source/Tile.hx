@@ -30,4 +30,9 @@ class Tile
 		this.type = type;	
 		debugColour = DEBUG_COLOURS[type];
 	}
+
+	public function toString():String
+	{
+		return x + "," + y + "," + type;
+	}
 }
