@@ -89,6 +89,7 @@ class Main extends Sprite
 
 	private function key_down(e:KeyboardEvent):Void
 	{
+		trace(e.keyCode);
 		_keyboardState.keysJustDown[e.keyCode] = true;
 		_keyboardState.keysDown[e.keyCode] = true;
 	}

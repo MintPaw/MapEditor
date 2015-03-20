@@ -38,6 +38,21 @@ class EditorState
 
 	public function update(time:Float, mouse:MouseState, keyboard:KeyboardState):Void
 	{
+		{ // Update mouse
+			if (mouse.mouse1)
+			{
+				var tileOver:Point = { x: mouse.x / _tileWidth, y: mouse.y / _tileHeight };
+				var indexOver:Int = Utils.point_to_index(tileOver.x, tileOver.y, _widthInTiles);
+				_tilemap[indexOver].paint(_tileToPaint);
+			}
+		}
+
+		{ // Update Keyboard
+			// NOTE(jeru): These are not ascii
+			if (keyboard.keysJustDown[188]) _tileToPaint = _tileToPaint - 1 >= 0 ? _tileToPaint - 1: _tileToPaint;
+			if (keyboard.keysJustDown[190]) _tileToPaint = _tileToPaint + 1;
+		}
+
 		{ // Update render
 			renders = [];
 
@@ -45,15 +60,6 @@ class EditorState
 			{
 				var point:Point = Utils.index_to_point(tileIndex, _widthInTiles);
 				renders.push({ x: point.x * _tileWidth, y: point.y * _tileHeight, width: _tileWidth, height: _tileHeight, colour: _tilemap[tileIndex].debug_colour });
-			}
-		}
-
-		{ // Update mouse
-			if (mouse.mouse1)
-			{
-				var tileOver:Point = { x: mouse.x / _tileWidth, y: mouse.y / _tileHeight };
-				var indexOver:Int = Utils.point_to_index(tileOver.x, tileOver.y, _widthInTiles);
-				_tilemap[indexOver].paint(_tileToPaint);
 			}
 		}
 	}
