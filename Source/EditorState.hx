@@ -130,7 +130,6 @@ class EditorState
 	{
 		for (tile in _tilemap)
 		{
-			trace("- " + tile.toString() + " " + tile.debugColour);
 			_renderer.draw_rect(
 					Std.int(tile.x * _tileWidth),
 					Std.int(tile.y * _tileHeight),
