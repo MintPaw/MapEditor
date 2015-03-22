@@ -2,6 +2,7 @@ package ;
 
 // NOTE(jeru): Is platform dependant
 import haxe.io.Bytes;
+import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
@@ -48,9 +49,10 @@ class Main extends Sprite
 			height: stage.stageHeight
 		};
 
-		_editorState = new EditorState(_systemVars, _buffer);
+		_editorState = new EditorState(_systemVars);
 		_editorState.write_file = write_file;
 		_editorState.read_file = read_file;
+		_editorState.get_image_data = get_image_data;
 
 		_canvasData = new BitmapData(_systemVars.width, _systemVars.height);
 
@@ -124,5 +126,12 @@ class Main extends Sprite
 		file.close();
 
 		return string;
+	}
+
+	private function get_image_data(filename:String):Utils.ImageData
+	{
+		var bitmapData:BitmapData = Assets.getBitmapData(filename);
+		var ba:ByteArray = bitmapData.getPixels(bitmapData.rect);
+		return { width: bitmapData.width, height: bitmapData.height, byteArray: ba };
 	}
 }

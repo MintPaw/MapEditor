@@ -9,7 +9,7 @@
 	
 	<haxelib name="openfl" />
 	
-	<assets path="Assets" rename="assets" exclude="openfl.svg" />
+	<assets path="Assets" exclude="openfl.svg" />
 	<icon path="Assets/openfl.svg" />
 	
 </project>

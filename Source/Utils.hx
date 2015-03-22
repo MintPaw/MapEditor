@@ -1,5 +1,7 @@
 package ;
 
+import openfl.utils.ByteArray;
+
 class Utils
 {
 	public static function index_to_point(index:Int, totalWidth:Float):Point
@@ -16,6 +18,12 @@ class Utils
 	{
 		return Std.int(Math.round(x / toTheNearest) *  toTheNearest);
 	}
+}
+
+typedef ImageData = {
+	byteArray:ByteArray,
+	width:Int,
+	height:Int
 }
 
 typedef Point = {

@@ -1,13 +1,14 @@
 package ;
 
 import Utils.Point;
+import Utils.ImageData;
 import openfl.utils.ByteArray;
 
 class EditorState
 {
-	public var buffer:ByteArray;
 	public var write_file:Dynamic;
 	public var read_file:Dynamic;
+	public var get_image_data:Dynamic;
 
 	private var _systemVars:Dynamic;
 	private var _gameVars:Map<String, String>;
@@ -22,10 +23,10 @@ class EditorState
 	private var _heightInTiles:Int = 18;
 
 	private var _tileToPaint:Int = 1;
+	private var _tileMapData:Tilemap;
 
-	public function new(systemVars:Dynamic, buffer:ByteArray)
+	public function new(systemVars:Dynamic)
 	{
-		this.buffer = buffer;
 		_systemVars = systemVars;
 		_filename = "UntitledMap.mim";
 		_gameVars = new Map();
@@ -48,7 +49,11 @@ class EditorState
 		}
 
 		{ // Setup renderer
-			_renderer = new Renderer(buffer, _systemVars.width);
+			_renderer = new Renderer(_systemVars.width);
+		}
+
+		{ // Get tile map data
+			_tileMapData = get_image_data("Assets/img/tilemaps/tilemap.png");
 		}
 	}
 
