@@ -53,6 +53,8 @@ class Main extends Sprite
 		_editorState.write_file = write_file;
 		_editorState.read_file = read_file;
 		_editorState.get_image_data = get_image_data;
+		_editorState.image_to_tilemap = image_to_tilemap;
+		_editorState.start();
 
 		_canvasData = new BitmapData(_systemVars.width, _systemVars.height);
 
@@ -133,5 +135,26 @@ class Main extends Sprite
 		var bitmapData:BitmapData = Assets.getBitmapData(filename);
 		var ba:ByteArray = bitmapData.getPixels(bitmapData.rect);
 		return { width: bitmapData.width, height: bitmapData.height, byteArray: ba };
+	}
+
+	private function image_to_tilemap(imageData: Utils.ImageData, tileWidth:Int, tileHeight:Int):Utils.Tilemap
+	{
+		var tilemap:Utils.Tilemap = { byteArrays: [], tileWidth: tileWidth, tileHeight: tileHeight };
+		var bitmapData:BitmapData = new BitmapData(imageData.width, imageData.height, false);
+		var tilesWide:Int = Std.int(imageData.width / tileWidth);
+		var tilesHigh:Int = Std.int(imageData.height / tileHeight);
+
+		imageData.byteArray.position = 0;
+		bitmapData.setPixels(new Rectangle(0, 0, imageData.width, imageData.height), imageData.byteArray);
+
+		for (xi in 0...tilesWide)
+		{
+			for (yi in 0...tilesHigh)
+			{
+				tilemap.byteArrays[yi * tilesWide + xi] = bitmapData.getPixels(new Rectangle(xi * tileWidth, yi * tileHeight, tileWidth, tileHeight));
+			}
+		}
+
+		return tilemap;
 	}
 }

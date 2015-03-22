@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json-array</string>
         <key>textureFileName</key>
-        <filename>tilemap.png</filename>
+        <filename>../Assets/img/tilemaps/tilemap.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>

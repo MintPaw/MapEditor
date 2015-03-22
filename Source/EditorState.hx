@@ -2,6 +2,7 @@ package ;
 
 import Utils.Point;
 import Utils.ImageData;
+import Utils.Tilemap;
 import openfl.utils.ByteArray;
 
 class EditorState
@@ -9,6 +10,7 @@ class EditorState
 	public var write_file:Dynamic;
 	public var read_file:Dynamic;
 	public var get_image_data:Dynamic;
+	public var image_to_tilemap:Dynamic;
 
 	private var _systemVars:Dynamic;
 	private var _gameVars:Map<String, String>;
@@ -28,8 +30,15 @@ class EditorState
 	public function new(systemVars:Dynamic)
 	{
 		_systemVars = systemVars;
-		_filename = "UntitledMap.mim";
-		_gameVars = new Map();
+	}
+
+	public function start():Void
+	{
+		{ // Setup starting variables
+			_filename = "UntitledMap.mim";
+			_gameVars = new Map();
+			_tileMapData = image_to_tilemap(get_image_data("Assets/img/tilemaps/tilemap.png"), 40, 40);
+		}
 
 		_gameVars.set("tileWidth", Std.string(_tileWidth));
 		_gameVars.set("tileHeight", Std.string(_tileHeight));
@@ -51,14 +60,15 @@ class EditorState
 		{ // Setup renderer
 			_renderer = new Renderer(_systemVars.width);
 		}
-
-		{ // Get tile map data
-			_tileMapData = get_image_data("Assets/img/tilemaps/tilemap.png");
-		}
 	}
 
 	public function update(time:Float, mouse:MouseState, keyboard:KeyboardState):Void
 	{
+		_renderer.draw_tile(_tileMapData, 0, 0, 0);
+		_renderer.draw_tile(_tileMapData, 1, 40, 0);
+		//_renderer.draw_tile(_tileMapData, 2, 40, 0);
+		//_renderer.draw_tile(_tileMapData, 3, 80, 0);
+
 		{ // Update mouse
 			if (mouse.mouse1)
 			{

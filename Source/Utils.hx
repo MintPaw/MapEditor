@@ -30,3 +30,9 @@ typedef Point = {
 	x:Float,
 	y:Float
 }
+
+typedef Tilemap = {
+	byteArrays:Array<ByteArray>,
+	tileWidth:Int,
+	tileHeight:Int
+}
