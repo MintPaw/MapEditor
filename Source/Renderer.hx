@@ -4,6 +4,7 @@ package ;
 import openfl.utils.ByteArray;
 import openfl.Memory;
 import Utils.Tilemap;
+import Utils.TextField;
 
 class Renderer
 {
@@ -25,19 +26,40 @@ class Renderer
 		}
 	}
 
-	public function draw_tile(tilemap: Tilemap, tileIndex:Int, x: Float, y:Float):Void
+	public function draw_tile(tilemap: Tilemap, tileIndex:Int, x: Int, y:Int):Void
 	{
 		tilemap.byteArrays[tileIndex].position = 0;
 
-		for (byteIndex in 0...tilemap.byteArrays[tileIndex].length - 1)
+		draw_byte_array(tilemap.byteArrays[tileIndex], x, y, tilemap.tileWidth, tilemap.tileHeight);
+		// for (byteIndex in 0...tilemap.byteArrays[tileIndex].length - 1)
+		// {
+		// 	var xAt:Int = Std.int(byteIndex % (tilemap.tileWidth * 4) + x * 4);
+		// 	var yAt:Int = Std.int(byteIndex / (tilemap.tileWidth * 4) + y);
+
+		// 	var realIndex:Int = yAt * _bufferWidth * 4 + xAt;
+
+		// 	Memory.setByte(realIndex, tilemap.byteArrays[tileIndex].readByte());
+		// }
+	}
+
+	public function draw_byte_array(byteArray:ByteArray, x:Int, y:Int, width:Int, height:Int):Void
+	{
+		byteArray.position = 0;
+
+		for (byteIndex in 0...byteArray.length - 1)
 		{
-			var xAt:Int = Std.int(byteIndex % (tilemap.tileWidth * 4) + x * 4);
-			var yAt:Int = Std.int(byteIndex / (tilemap.tileWidth * 4) + y);
+			var xAt:Int = Std.int(byteIndex % (width * 4) + x * 4);
+			var yAt:Int = Std.int(byteIndex / (height * 4) + y);
 
 			var realIndex:Int = yAt * _bufferWidth * 4 + xAt;
 
-			Memory.setByte(realIndex, tilemap.byteArrays[tileIndex].readByte());
+			Memory.setByte(realIndex, byteArray.readByte());
 		}
+	}
+
+	public function draw_text_field(textField:TextField):Void
+	{
+
 	}
 
 	public inline function draw_pixel(x:Int, y:Int, colour:UInt):Void

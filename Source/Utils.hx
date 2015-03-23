@@ -36,3 +36,11 @@ typedef Tilemap = {
 	tileWidth:Int,
 	tileHeight:Int
 }
+
+typedef TextField = {
+	x:Float,
+	y:Float,
+	width:Float,
+	height:Float,
+	text:String
+}

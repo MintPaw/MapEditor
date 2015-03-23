@@ -3,6 +3,7 @@ package ;
 import Utils.Point;
 import Utils.ImageData;
 import Utils.Tilemap;
+import Utils.TextField;
 import openfl.utils.ByteArray;
 
 class EditorState
@@ -19,69 +20,72 @@ class EditorState
 
 	private var _filename:String;
 
-	private var _tileWidth:Float = 40;
-	private var _tileHeight:Float = 40;
-	private var _widthInTiles:Int = 32;
-	private var _heightInTiles:Int = 18;
-
-	private var _tileToPaint:Int = 1;
-	private var _tileMapData:Tilemap;
+	private var _tileToPaint:Int = -1;
+	private var _tilemapData:Tilemap;
 
 	public function new(systemVars:Dynamic)
 	{
 		_systemVars = systemVars;
-	}
-
-	public function start():Void
-	{
-		{ // Setup starting variables
-			_filename = "UntitledMap.mim";
-			_gameVars = new Map();
-			_tileMapData = image_to_tilemap(get_image_data("Assets/img/tilemaps/tilemap.png"), 40, 40);
-		}
-
-		_gameVars.set("tileWidth", Std.string(_tileWidth));
-		_gameVars.set("tileHeight", Std.string(_tileHeight));
-		_gameVars.set("widthInTiles", Std.string(_heightInTiles));
-		_gameVars.set("heightInTiles", Std.string(_widthInTiles));
-
-		{ // Setup tilemap
-			_tilemap = [];
-
-			for (tileY in 0..._heightInTiles)
-			{
-				for (tileX in 0..._widthInTiles)
-				{
-					_tilemap.push(new Tile(tileX, tileY, 0));
-				}
-			}
-		}
 
 		{ // Setup renderer
 			_renderer = new Renderer(_systemVars.width);
 		}
 	}
 
+	public function start():Void
+	{
+		//_renderer.draw_rect(0, 0, _systemVars.width, _systemVars.height, 0x000000FF);
+		var textField = {x: 0, y: 0, width: 200, height: 50, text: "test"};
+		setupEditor();
+	}
+
+	private function setupEditor()
+	{
+		{ // Setup starting variables
+			_filename = "UntitledMap.mim";
+			_gameVars = new Map();
+			_tilemapData = image_to_tilemap(get_image_data("Assets/img/tilemaps/tilemap.png"), 40, 40);
+		}
+
+		_gameVars.set("tileWidth", "40");
+		_gameVars.set("tileHeight", "40");
+		_gameVars.set("widthInTiles", "32");
+		_gameVars.set("heightInTiles", "18");
+
+		{ // Setup tilemap
+			_tilemap = [];
+
+			for (tileY in 0...Std.parseInt(_gameVars.get("heightInTiles")))
+			{
+				for (tileX in 0...Std.parseInt(_gameVars.get("widthInTiles")))
+				{
+					_tilemap.push(new Tile(tileX, tileY, 0));
+				}
+			}
+		}
+	}
+
 	public function update(time:Float, mouse:MouseState, keyboard:KeyboardState):Void
 	{
-		_renderer.draw_tile(_tileMapData, 0, 0, 0);
-		_renderer.draw_tile(_tileMapData, 1, 40, 0);
-		_renderer.draw_tile(_tileMapData, 2, 0, 40);
-		_renderer.draw_tile(_tileMapData, 3, 40, 40);
-
 		{ // Update mouse
-			if (mouse.mouse1)
+			if (_tileToPaint != -1)
 			{
-				var tileOver:Point = { x: mouse.x / _tileWidth, y: mouse.y / _tileHeight };
-				var indexOver:Int = Utils.point_to_index(tileOver.x, tileOver.y, _widthInTiles);
-				_tilemap[indexOver].paint(_tileToPaint);
+				if (mouse.mouse1)
+				{
+					var tileOver:Point = {
+						x: mouse.x / Std.parseInt(_gameVars.get("tileWidth")),
+						y: mouse.y / Std.parseInt(_gameVars.get("tileHeight")) };
 
-				_renderer.draw_rect(
-					Std.int(_tilemap[indexOver].x * _tileWidth),
-					Std.int(_tilemap[indexOver].y * _tileHeight),
-					Std.int(_tileWidth),
-					Std.int(_tileHeight),
-					_tilemap[indexOver].debugColour);
+					var indexOver:Int = Utils.point_to_index(
+						tileOver.x,
+						tileOver.y,
+						Std.parseInt(_gameVars.get("widthInTiles")));
+					_tilemap[indexOver].paint(_tileToPaint);
+
+					_renderer.draw_tile(_tilemapData, _tilemap[indexOver].type,
+						Std.int(_tilemap[indexOver].x * Std.parseInt(_gameVars.get("tileWidth"))),
+						Std.int(_tilemap[indexOver].y * Std.parseInt(_gameVars.get("tileHeight"))));
+				}
 			}
 		}
 
@@ -145,12 +149,9 @@ class EditorState
 	{
 		for (tile in _tilemap)
 		{
-			_renderer.draw_rect(
-					Std.int(tile.x * _tileWidth),
-					Std.int(tile.y * _tileHeight),
-					Std.int(_tileWidth),
-					Std.int(_tileHeight),
-					tile.debugColour);
+			_renderer.draw_tile(_tilemapData, tile.type,
+					Std.int(tile.x * Std.parseInt(_gameVars.get("tileWidth"))),
+					Std.int(tile.y * Std.parseInt(_gameVars.get("tileHeight"))));
 		}
 	}
 }

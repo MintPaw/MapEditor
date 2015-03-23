@@ -49,13 +49,6 @@ class Main extends Sprite
 			height: stage.stageHeight
 		};
 
-		_editorState = new EditorState(_systemVars);
-		_editorState.write_file = write_file;
-		_editorState.read_file = read_file;
-		_editorState.get_image_data = get_image_data;
-		_editorState.image_to_tilemap = image_to_tilemap;
-		_editorState.start();
-
 		_canvasData = new BitmapData(_systemVars.width, _systemVars.height);
 
 		_rect = _canvasData.rect;
@@ -64,6 +57,13 @@ class Main extends Sprite
 
 		_canvas = new Bitmap(_canvasData);
 		addChild(_canvas);
+
+		_editorState = new EditorState(_systemVars);
+		_editorState.write_file = write_file;
+		_editorState.read_file = read_file;
+		_editorState.get_image_data = get_image_data;
+		_editorState.image_to_tilemap = image_to_tilemap;
+		_editorState.start();
 
 		addEventListener(Event.ENTER_FRAME, update);
 		stage.addEventListener(MouseEvent.MOUSE_MOVE, mouse_move);
