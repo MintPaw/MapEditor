@@ -66,8 +66,8 @@ class EditorState
 	{
 		_renderer.draw_tile(_tileMapData, 0, 0, 0);
 		_renderer.draw_tile(_tileMapData, 1, 40, 0);
-		//_renderer.draw_tile(_tileMapData, 2, 40, 0);
-		//_renderer.draw_tile(_tileMapData, 3, 80, 0);
+		_renderer.draw_tile(_tileMapData, 2, 0, 40);
+		_renderer.draw_tile(_tileMapData, 3, 40, 40);
 
 		{ // Update mouse
 			if (mouse.mouse1)

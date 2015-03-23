@@ -27,20 +27,16 @@ class Renderer
 
 	public function draw_tile(tilemap: Tilemap, tileIndex:Int, x: Float, y:Float):Void
 	{
-		var bytesPerPixel:Int = 4;
 		tilemap.byteArrays[tileIndex].position = 0;
 
 		for (byteIndex in 0...tilemap.byteArrays[tileIndex].length - 1)
 		{
-			//x: index % totalWidth, y: (index - index%totalWidth) / totalWidth
-			//Std.int(Std.int(y)*totalWidth + Std.int(x));
-			var realIndex:Int = Std.int(byteIndex % (tilemap.tileWidth * 4)) + Std.int(byteIndex / (tilemap.tileWidth*4)) * 1280 * 4;
-			//trace(Std.int(byteIndex / tilemap.tileWidth) * 1280);
+			var xAt:Int = Std.int(byteIndex % (tilemap.tileWidth * 4) + x * 4);
+			var yAt:Int = Std.int(byteIndex / (tilemap.tileWidth * 4) + y);
 
-			//trace(Std.int(y * tilemap.tileWidth + x));
-			//trace(tilemap.byteArrays[tileIndex].readByte());
+			var realIndex:Int = yAt * _bufferWidth * 4 + xAt;
+
 			Memory.setByte(realIndex, tilemap.byteArrays[tileIndex].readByte());
-			//draw_pixel(xi, yi, colour);
 		}
 	}
 
