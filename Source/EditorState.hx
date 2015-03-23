@@ -25,17 +25,21 @@ class EditorState
 
 	public function new(systemVars:Dynamic)
 	{
-		_systemVars = systemVars;
-
-		{ // Setup renderer
+		{ // Setup vars
+			_systemVars = systemVars;
 			_renderer = new Renderer(_systemVars.width);
+		}
+
+		{ // Prepare fonts
+			get_font("");
 		}
 	}
 
 	public function start():Void
 	{
 		_renderer.draw_rect(0, 0, _systemVars.width, _systemVars.height, 0x000000FF);
-		var textField = { x: 0.0, y: 0.0, width: 200.0, height: 50.0, text: "test", bgColour: 0xFFFFFFFF };
+
+		var textField = { x: 0.0, y: 0.0, width: 200.0, height: 50.0, text: "test", bgColour: 0xFFFFFFFF, fontName: "OpenSans" };
 		_renderer.draw_text_field(textField);
 	}
 

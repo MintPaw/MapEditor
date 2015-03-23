@@ -8,6 +8,7 @@
 	<source path="Source" />
 	
 	<haxelib name="openfl" />
+	<haxelib name="lime" />
 	
 	<assets path="Assets" exclude="openfl.svg" />
 	<icon path="Assets/openfl.svg" />

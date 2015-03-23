@@ -2,6 +2,8 @@ package ;
 
 // NOTE(jeru): Is platform dependant
 import haxe.io.Bytes;
+import lime.Assets;
+import lime.text.Font;
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -28,12 +30,15 @@ class Main extends Sprite
 	private var _canvasData:BitmapData;
 	private var _buffer:ByteArray;
 	private var _rect:Rectangle;
+
+	private var _fonts:Map<String, Font>;
 	
 	public function new()
 	{
 		super();
 		_mouseState = { x: 0, y: 0, mouse1: false };
 		_keyboardState = { keysDown: [], keysJustDown: [], keysJustUp: [] };
+		_fonts = new Map();
 
 		addEventListener(Event.ADDED_TO_STAGE, init);
 	}
@@ -83,6 +88,12 @@ class Main extends Sprite
 			for (keyIndex in 0..._keyboardState.keysJustUp.length) _keyboardState.keysJustUp[keyIndex] = false;
 			for (keyIndex in 0..._keyboardState.keysJustDown.length) _keyboardState.keysJustDown[keyIndex] = false;
 		}
+	}
+
+	private function load_font(filename:String):Void
+	{
+		var font:Font = Assets.getFont(filename);
+		_fonts.set(font.name, font);
 	}
 
 	private function mouse_move(e:MouseEvent):Void

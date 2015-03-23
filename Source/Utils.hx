@@ -43,5 +43,6 @@ typedef TextField = {
 	width:Float,
 	height:Float,
 	text:String,
-	bgColour:Int
+	bgColour:Int,
+	fontName:String
 }
