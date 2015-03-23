@@ -34,9 +34,9 @@ class EditorState
 
 	public function start():Void
 	{
-		//_renderer.draw_rect(0, 0, _systemVars.width, _systemVars.height, 0x000000FF);
-		var textField = {x: 0, y: 0, width: 200, height: 50, text: "test"};
-		setupEditor();
+		_renderer.draw_rect(0, 0, _systemVars.width, _systemVars.height, 0x000000FF);
+		var textField = { x: 0.0, y: 0.0, width: 200.0, height: 50.0, text: "test", bgColour: 0xFFFFFFFF };
+		_renderer.draw_text_field(textField);
 	}
 
 	private function setupEditor()

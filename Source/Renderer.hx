@@ -31,15 +31,6 @@ class Renderer
 		tilemap.byteArrays[tileIndex].position = 0;
 
 		draw_byte_array(tilemap.byteArrays[tileIndex], x, y, tilemap.tileWidth, tilemap.tileHeight);
-		// for (byteIndex in 0...tilemap.byteArrays[tileIndex].length - 1)
-		// {
-		// 	var xAt:Int = Std.int(byteIndex % (tilemap.tileWidth * 4) + x * 4);
-		// 	var yAt:Int = Std.int(byteIndex / (tilemap.tileWidth * 4) + y);
-
-		// 	var realIndex:Int = yAt * _bufferWidth * 4 + xAt;
-
-		// 	Memory.setByte(realIndex, tilemap.byteArrays[tileIndex].readByte());
-		// }
 	}
 
 	public function draw_byte_array(byteArray:ByteArray, x:Int, y:Int, width:Int, height:Int):Void
@@ -59,7 +50,7 @@ class Renderer
 
 	public function draw_text_field(textField:TextField):Void
 	{
-
+		draw_rect(Std.int(textField.x), Std.int(textField.y), Std.int(textField.width), Std.int(textField.height), Std.int(textField.bgColour));
 	}
 
 	public inline function draw_pixel(x:Int, y:Int, colour:UInt):Void

@@ -42,5 +42,6 @@ typedef TextField = {
 	y:Float,
 	width:Float,
 	height:Float,
-	text:String
+	text:String,
+	bgColour:Int
 }
