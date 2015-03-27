@@ -49,7 +49,7 @@ class EditorState
 		{ // Setup starting variables
 			_filename = "UntitledMap.mim";
 			_gameVars = new Map();
-			_tilemapData = image_to_tilemap(get_image_data("Assets/img/tilemaps/tilemap.png"), 40, 40);
+			_tilemapData = Utils.image_to_tilemap(get_image_data("Assets/img/tilemaps/tilemap.png"), 40, 40);
 		}
 
 		_gameVars.set("tileWidth", "40");

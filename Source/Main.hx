@@ -59,6 +59,7 @@ class Main extends Sprite
 		addChild(_canvas);
 
 		_editorState = new EditorState(_systemVars);
+		Utils.image_to_split_byte_arrays = image_to_split_byte_arrays;
 		_editorState.write_file = write_file;
 		_editorState.read_file = read_file;
 		_editorState.get_image_data = get_image_data;
@@ -135,6 +136,28 @@ class Main extends Sprite
 		var bitmapData:BitmapData = Assets.getBitmapData(filename);
 		var ba:ByteArray = bitmapData.getPixels(bitmapData.rect);
 		return { width: bitmapData.width, height: bitmapData.height, byteArray: ba };
+	}
+
+	private function image_to_split_byte_arrays(imageData: Utils.ImageData, tileWidth:Int, tileHeight:Int):Array<ByteArray>
+	{
+		var images:Array<ByteArray> = [];
+
+		var bitmapData:BitmapData = new BitmapData(imageData.width, imageData.height, false);
+		var tilesWide:Int = Std.int(imageData.width / tileWidth);
+		var tilesHigh:Int = Std.int(imageData.height / tileHeight);
+
+		imageData.byteArray.position = 0;
+		bitmapData.setPixels(new Rectangle(0, 0, imageData.width, imageData.height), imageData.byteArray);
+
+		for (xi in 0...tilesWide)
+		{
+			for (yi in 0...tilesHigh)
+			{
+				images[yi * tilesWide + xi] = bitmapData.getPixels(new Rectangle(xi * tileWidth, yi * tileHeight, tileWidth, tileHeight));
+			}
+		}
+
+		return images;
 	}
 
 	private function image_to_tilemap(imageData: Utils.ImageData, tileWidth:Int, tileHeight:Int):Utils.Tilemap

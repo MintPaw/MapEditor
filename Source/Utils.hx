@@ -4,6 +4,8 @@ import openfl.utils.ByteArray;
 
 class Utils
 {
+	public static var image_to_split_byte_arrays:Dynamic;
+	
 	public static function index_to_point(index:Int, totalWidth:Float):Point
 	{
 		return { x: index % totalWidth, y: (index - index%totalWidth) / totalWidth };
@@ -23,6 +25,13 @@ class Utils
 	{
 		var font:Font = { name: name, glyphWidth: 0, glyphHeight: 0, glyphs: 0, byteArrays: [] };
 		return font;
+	}
+
+	public static function image_to_tilemap(imageData: Utils.ImageData, tileWidth:Int, tileHeight:Int):Tilemap
+	{
+		var byteArrays:Array<ByteArray> = image_to_split_byte_arrays(imageData, tileWidth, tileHeight);
+
+		return { byteArrays: byteArrays, tileWidth: tileWidth, tileHeight: tileHeight };
 	}
 }
 
