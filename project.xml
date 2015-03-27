@@ -4,12 +4,11 @@
 
 	<meta title="MapEditor" package="com.sample.mapeditor" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="MapEditor" />
-	
+
 	<source path="Source" />
-	
+
 	<haxelib name="openfl" />
-	<haxelib name="lime" />
-	
+
 	<assets path="Assets" exclude="openfl.svg" />
 	<icon path="Assets/openfl.svg" />
 	

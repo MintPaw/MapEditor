@@ -2,8 +2,6 @@ package ;
 
 // NOTE(jeru): Is platform dependant
 import haxe.io.Bytes;
-import lime.Assets;
-import lime.text.Font;
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -14,6 +12,7 @@ import openfl.events.MouseEvent;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.Memory;
+import openfl.text.Font;
 import openfl.utils.ByteArray;
 import sys.io.File;
 import sys.io.FileOutput;
@@ -31,14 +30,14 @@ class Main extends Sprite
 	private var _buffer:ByteArray;
 	private var _rect:Rectangle;
 
-	private var _fonts:Map<String, Font>;
+	//private var _fonts:Map<String, Font>;
 	
 	public function new()
 	{
 		super();
 		_mouseState = { x: 0, y: 0, mouse1: false };
 		_keyboardState = { keysDown: [], keysJustDown: [], keysJustUp: [] };
-		_fonts = new Map();
+		//_fonts = new Map();
 
 		addEventListener(Event.ADDED_TO_STAGE, init);
 	}
@@ -68,6 +67,7 @@ class Main extends Sprite
 		_editorState.read_file = read_file;
 		_editorState.get_image_data = get_image_data;
 		_editorState.image_to_tilemap = image_to_tilemap;
+		_editorState.get_font = get_font;
 		_editorState.start();
 
 		addEventListener(Event.ENTER_FRAME, update);
@@ -90,10 +90,11 @@ class Main extends Sprite
 		}
 	}
 
-	private function load_font(filename:String):Void
+	private function get_font(filename:String):Void
 	{
 		var font:Font = Assets.getFont(filename);
-		_fonts.set(font.name, font);
+		trace(Reflect.fields(font));
+		//font.getGlyph("a");
 	}
 
 	private function mouse_move(e:MouseEvent):Void

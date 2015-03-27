@@ -12,6 +12,7 @@ class EditorState
 	public var read_file:Dynamic;
 	public var get_image_data:Dynamic;
 	public var image_to_tilemap:Dynamic;
+	public var get_font:Dynamic;
 
 	private var _systemVars:Dynamic;
 	private var _gameVars:Map<String, String>;
@@ -29,14 +30,14 @@ class EditorState
 			_systemVars = systemVars;
 			_renderer = new Renderer(_systemVars.width);
 		}
-
-		{ // Prepare fonts
-			get_font("");
-		}
 	}
 
 	public function start():Void
 	{
+		{ // Prepare fonts
+			get_font("Assets/font/opensans.ttf");
+		}
+
 		_renderer.draw_rect(0, 0, _systemVars.width, _systemVars.height, 0x000000FF);
 
 		var textField = { x: 0.0, y: 0.0, width: 200.0, height: 50.0, text: "test", bgColour: 0xFFFFFFFF, fontName: "OpenSans" };
