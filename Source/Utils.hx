@@ -18,6 +18,12 @@ class Utils
 	{
 		return Std.int(Math.round(x / toTheNearest) *  toTheNearest);
 	}
+
+	public static function get_font(name:String, imageData:ImageData, glyphsWide:Int):Font
+	{
+		var font:Font = { name: name, glyphWidth: 0, glyphHeight: 0, glyphs: 0, byteArrays: [] };
+		return font;
+	}
 }
 
 typedef ImageData = {
@@ -45,4 +51,12 @@ typedef TextField = {
 	text:String,
 	bgColour:Int,
 	fontName:String
+}
+
+typedef Font = {
+	name:String,
+	glyphWidth:Int,
+	glyphHeight:Float,
+	glyphs:Int,
+	byteArrays:Array<ByteArray>
 }
