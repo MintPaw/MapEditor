@@ -4,6 +4,7 @@ import Utils.Point;
 import Utils.ImageData;
 import Utils.Tilemap;
 import Utils.TextField;
+import Utils.Font;
 import openfl.utils.ByteArray;
 
 class EditorState
@@ -34,19 +35,7 @@ class EditorState
 
 	public function start():Void
 	{
-		{ // Prepare fonts
-			var testFont:Font = Utils.get_font("Open Sans", get_image_data("Assets/img/font/OpenSans.png"), 512/16, 592/16);
-			_renderer.draw_byte_array(
-		}
-
-		
-
-		return;
-
-		_renderer.draw_rect(0, 0, _systemVars.width, _systemVars.height, 0x000000FF);
-
-		var textField = { x: 0.0, y: 0.0, width: 200.0, height: 50.0, text: "test", bgColour: 0xFFFFFFFF, fontName: "OpenSans" };
-		_renderer.draw_text_field(textField);
+		setupEditor();
 	}
 
 	private function setupEditor()

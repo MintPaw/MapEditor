@@ -23,8 +23,8 @@ class Utils
 
 	public static function get_font(name:String, imageData:ImageData, glyphWidth:Int, glyphHeight:Int):Font
 	{
-		var font:Font = { name: name, glyphWidth: glythWidth, glyphHeight: glypthHeight, glyphs: 0, byteArrays: [] };
-		font.byteArrays = image_to_split_byte_arrays(imageData, glythWidth, glypthHeight);
+		var font:Font = { name: name, glyphWidth: glyphWidth, glyphHeight: glyphHeight, glyphs: 0, byteArrays: [] };
+		font.byteArrays = image_to_split_byte_arrays(imageData, glyphWidth, glyphHeight);
 
 		return font;
 	}

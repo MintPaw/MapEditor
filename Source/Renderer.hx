@@ -35,6 +35,8 @@ class Renderer
 
 	public function draw_byte_array(byteArray:ByteArray, x:Int, y:Int, width:Int, height:Int):Void
 	{
+		if (x + width > _bufferWidth) x = _bufferWidth - width;
+
 		byteArray.position = 0;
 
 		for (byteIndex in 0...byteArray.length - 1)
