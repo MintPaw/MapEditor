@@ -21,9 +21,11 @@ class Utils
 		return Std.int(Math.round(x / toTheNearest) *  toTheNearest);
 	}
 
-	public static function get_font(name:String, imageData:ImageData, glyphsWide:Int):Font
+	public static function get_font(name:String, imageData:ImageData, glyphWidth:Int, glyphHeight:Int):Font
 	{
-		var font:Font = { name: name, glyphWidth: 0, glyphHeight: 0, glyphs: 0, byteArrays: [] };
+		var font:Font = { name: name, glyphWidth: glythWidth, glyphHeight: glypthHeight, glyphs: 0, byteArrays: [] };
+		font.byteArrays = image_to_split_byte_arrays(imageData, glythWidth, glypthHeight);
+
 		return font;
 	}
 

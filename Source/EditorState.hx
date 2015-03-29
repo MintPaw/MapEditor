@@ -35,8 +35,13 @@ class EditorState
 	public function start():Void
 	{
 		{ // Prepare fonts
-			Utils.get_font("Open Sans", get_image_data("Assets/img/font/OpenSans.png"), 16);
+			var testFont:Font = Utils.get_font("Open Sans", get_image_data("Assets/img/font/OpenSans.png"), 512/16, 592/16);
+			_renderer.draw_byte_array(
 		}
+
+		
+
+		return;
 
 		_renderer.draw_rect(0, 0, _systemVars.width, _systemVars.height, 0x000000FF);
 
